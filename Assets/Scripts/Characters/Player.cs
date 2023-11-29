@@ -54,6 +54,9 @@ public class Player : MonoBehaviour
     
     private Rigidbody rb;
     private float depth;
+
+    public int currentClip, maxClipSize = 10, currentAmmo, maxAmmoSize = 50;
+
     
     // Start is called before the first frame update
     void Start()
@@ -65,6 +68,9 @@ public class Player : MonoBehaviour
         depth = GetComponent<Collider>().bounds.size.y;
 
         Health = maxHealth;
+
+        currentClip = maxClipSize;
+        currentAmmo = maxAmmoSize;
     }
 
     // Update is called once per frame
@@ -110,14 +116,36 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        Rigidbody currentProjectile = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
-        
-        currentProjectile.AddForce(followTarget.forward * projectileForce, ForceMode.Impulse);
+        if (currentClip > 0)
+        {
+            Rigidbody currentProjectile = Instantiate(bulletPrefab, transform.position, Quaternion.identity);
 
-        ++shotsFiredCounter;
+            currentProjectile.AddForce(followTarget.forward * projectileForce, ForceMode.Impulse);
 
-        shotsFired.text = shotsFiredCounter.ToString();
-        
-        Destroy(currentProjectile.gameObject,4);
+            ++shotsFiredCounter;
+
+            shotsFired.text = shotsFiredCounter.ToString();
+
+            Destroy(currentProjectile.gameObject, 4);
+            currentClip--;
+        }
     }
+
+    public void Reload()
+    {
+        int reloadAmount = maxClipSize - currentClip; // how many bullets to refill clip
+        reloadAmount = (currentAmmo - reloadAmount) >= 0 ? reloadAmount : currentAmmo;
+        currentClip += reloadAmount;
+        currentAmmo -= reloadAmount;
+    }
+
+    public void AddAmmo(int ammoAmount)
+    {
+        currentAmmo += ammoAmount;
+        if (currentAmmo > maxAmmoSize)
+        {
+            currentAmmo = maxAmmoSize;
+        }
+    }
+    
 }

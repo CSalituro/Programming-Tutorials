@@ -62,6 +62,15 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""processors"": ""InvertVector2(invertX=false)"",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""d03795f5-55e3-47de-97a2-4d2e64f5c972"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -229,6 +238,17 @@ public partial class @Controls: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ae0aa730-f581-44c5-aaba-04fc57cd1861"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -297,6 +317,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         m_InGame_Shoot = m_InGame.FindAction("Shoot", throwIfNotFound: true);
         m_InGame_Jump = m_InGame.FindAction("Jump", throwIfNotFound: true);
         m_InGame_Look = m_InGame.FindAction("Look", throwIfNotFound: true);
+        m_InGame_Reload = m_InGame.FindAction("Reload", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Newaction = m_UI.FindAction("New action", throwIfNotFound: true);
@@ -368,6 +389,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
     private readonly InputAction m_InGame_Shoot;
     private readonly InputAction m_InGame_Jump;
     private readonly InputAction m_InGame_Look;
+    private readonly InputAction m_InGame_Reload;
     public struct InGameActions
     {
         private @Controls m_Wrapper;
@@ -376,6 +398,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         public InputAction @Shoot => m_Wrapper.m_InGame_Shoot;
         public InputAction @Jump => m_Wrapper.m_InGame_Jump;
         public InputAction @Look => m_Wrapper.m_InGame_Look;
+        public InputAction @Reload => m_Wrapper.m_InGame_Reload;
         public InputActionMap Get() { return m_Wrapper.m_InGame; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -397,6 +420,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @Reload.started += instance.OnReload;
+            @Reload.performed += instance.OnReload;
+            @Reload.canceled += instance.OnReload;
         }
 
         private void UnregisterCallbacks(IInGameActions instance)
@@ -413,6 +439,9 @@ public partial class @Controls: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @Reload.started -= instance.OnReload;
+            @Reload.performed -= instance.OnReload;
+            @Reload.canceled -= instance.OnReload;
         }
 
         public void RemoveCallbacks(IInGameActions instance)
@@ -528,6 +557,7 @@ public partial class @Controls: IInputActionCollection2, IDisposable
         void OnShoot(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

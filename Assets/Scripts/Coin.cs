@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class Coin : MonoBehaviour
 {
-    // Start is called before the first frame update
     Collectables coin;
 
-    private void Awake() {
+    private void Awake() 
+    {
         coin = new Collectables("coin", 1, 0);
     }
 
-    private void OnCollisionEnter(Collision other) {
+    private void OnCollisionEnter(Collision other) 
+    {
         Debug.Log("enters collash");
         if(other.gameObject.tag == "Player")
         {

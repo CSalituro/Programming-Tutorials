@@ -28,6 +28,11 @@ public class InputManager : MonoBehaviour
     {
       myPlayer.Shoot();
     };
+    
+    _controls.InGame.Reload.started += ctx =>
+    {
+      myPlayer.Reload();
+    };
   }
 
   public static void SetGameControls()
